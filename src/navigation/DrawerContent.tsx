@@ -34,6 +34,8 @@ export function DrawerContent(props: any) {
 
   const logout = async () => {
     await auth().signOut();
+    setUser({...user, phone: ''});
+    navigate('Login');
     setLoggedIn(false);
   };
 
@@ -64,7 +66,7 @@ export function DrawerContent(props: any) {
           activeTintColor="black"
           inactiveTintColor="black"
           focused={activeDrawer == 'Call An Astrologer'}
-          label="Call An Astrologer"
+          label="Consultations"
           onPress={() => navigate('Call An Astrologer')}
         />
         <DrawerItem

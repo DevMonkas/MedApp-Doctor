@@ -16,7 +16,7 @@
 		80C23EB714444D028181B117 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 902E7A1674544EF385468945 /* Poppins-Regular.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A25C6B2A215CD3D58F337D02 /* libPods-QiviHealth_Doctor-QiviHealth_DoctorTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ADE452731E8781B8E1814A7 /* libPods-QiviHealth_Doctor-QiviHealth_DoctorTests.a */; };
-		E401B24B272AB0AF00BD1423 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E401B24A272AB0AF00BD1423 /* GoogleService-Info.plist */; };
+		E401B24D272AC63900BD1423 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E401B24C272AC63900BD1423 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,7 +60,7 @@
 		B9D5328C4B3A4A8583BD96C8 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		BA58FB1195118DC028F18EC2 /* Pods-QiviHealth_Doctor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QiviHealth_Doctor.release.xcconfig"; path = "Target Support Files/Pods-QiviHealth_Doctor/Pods-QiviHealth_Doctor.release.xcconfig"; sourceTree = "<group>"; };
 		C904DB250B08493F827EC27B /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
-		E401B24A272AB0AF00BD1423 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E401B24C272AC63900BD1423 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F421007FE17A454695483A62 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		F6573EB9166F4F1A8D7566AF /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
@@ -138,7 +138,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				E401B24A272AB0AF00BD1423 /* GoogleService-Info.plist */,
+				E401B24C272AC63900BD1423 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* QiviHealth_Doctor */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* QiviHealth_DoctorTests */,
@@ -293,10 +293,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				E401B24D272AC63900BD1423 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				80C23EB714444D028181B117 /* Poppins-Regular.ttf in Resources */,
 				35AFA1FC80FD47D49564DEA5 /* Roboto-Regular.ttf in Resources */,
-				E401B24B272AB0AF00BD1423 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

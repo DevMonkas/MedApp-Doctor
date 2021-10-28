@@ -17,6 +17,8 @@ import {useState} from 'react';
 import {FONTS, SIZES} from '../../constants/theme';
 import {openBrowserUrl} from '../../utils/Utility';
 import auth from '@react-native-firebase/auth';
+import {AuthContext} from '../../shared/AuthProvider';
+import {LoadingContext} from '../../shared/LoadingProvider';
 // import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 export default function Login({navigation}: any) {
   const [phone, setPhone] = React.useState('');
@@ -24,6 +26,12 @@ export default function Login({navigation}: any) {
   const attemptInvisibleVerification = false;
   const recaptchaVerifier = React.useRef<any>();
   const [err, setError] = useState('');
+  const [user, setUser] = React.useContext(AuthContext);
+  React.useEffect(() => {
+    if (user.phone !== '') {
+      navigation.navigate('DrawerScreen');
+    }
+  });
   const getOtp = async () => {
     try {
       const confirmation = await auth().signInWithPhoneNumber('+91' + phone);

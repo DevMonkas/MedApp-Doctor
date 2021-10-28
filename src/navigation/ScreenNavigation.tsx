@@ -26,12 +26,31 @@ import {SocketContext} from '../shared/SocketProvider';
 import {IMessage} from 'react-native-gifted-chat';
 import {getAllConversations, startConsultation} from '../services/Chat.service';
 import {MessageContext} from '../shared/MessageProvider';
+import {AuthContext} from '../shared/AuthProvider';
+import {getIdTokenRefreshed} from '../utils/Utility';
+import {checkAuth} from '../services/User.service';
+import {LoadingDialog} from '../components/Molecules/LoadingDialog/LoadingDialog';
 const Stack = createStackNavigator();
 
-export default function ScreenNavigation({viewedOnboarding}: any) {
+export default function ScreenNavigation({viewedOnboarding, navigation}: any) {
   const soc = useContext(SocketContext);
   const [messageObj, setMessageObj] = useContext(MessageContext);
+  const [user, setUser] = useContext(AuthContext);
+
   useEffect(() => {
+    getIdTokenRefreshed().then(token => {
+      checkAuth(token!).then(res => {
+        console.log('Details', res.data);
+        setUser({...res?.data});
+        console.log(res.data.phone);
+        if (res?.data?.phone) {
+          navigate(navigation, 'DrawerScreen');
+        } else {
+          console.error('No user found');
+          navigate(navigation, 'Login');
+        }
+      });
+    });
     getAllConversations()
       .then(data => {
         const myData = data.data;
@@ -51,7 +70,7 @@ export default function ScreenNavigation({viewedOnboarding}: any) {
         console.log(err);
       });
 
-    soc.on('message', data => {
+    soc.on('message', (data: any) => {
       let message: IMessage = {
         _id: data.from + '_' + Math.round(Math.random() * 1000000),
         createdAt: data.created_at,
@@ -97,21 +116,21 @@ export default function ScreenNavigation({viewedOnboarding}: any) {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Onboarding"
-        component={Onboarding}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
         name="DrawerScreen"
         component={DrawerNavigation}
         options={{headerShown: false}}
       />
-
       <Stack.Screen
         name="Login"
         component={Login}
         options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="Onboarding"
+        component={Onboarding}
+        options={{headerShown: false}}
+      />
+
       <Stack.Screen
         name="OTPScreen"
         component={OTPScreen}
