@@ -29,7 +29,7 @@ export function DrawerContent(props: any) {
     if (user) {
       setLoggedIn(true);
     }
-    // console.log('token', refreshedToken);
+    console.log('token', refreshedToken);
   });
 
   const logout = async () => {
@@ -65,9 +65,9 @@ export function DrawerContent(props: any) {
           activeBackgroundColor={COLORS.primary[200]}
           activeTintColor="black"
           inactiveTintColor="black"
-          focused={activeDrawer == 'Call An Astrologer'}
+          focused={activeDrawer == 'Consultation'}
           label="Consultations"
-          onPress={() => navigate('Call An Astrologer')}
+          onPress={() => navigate('Consultation')}
         />
         <DrawerItem
           icon={() => (

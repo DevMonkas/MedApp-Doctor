@@ -122,7 +122,7 @@ export default function DrawerNavigation() {
       })}
       drawerContent={props => <DrawerContent {...props} />}>
       <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Call An Astrologer" component={AstroCall} />
+      <Drawer.Screen name="Consultation" component={ChatList} />
     </Drawer.Navigator>
   );
 }

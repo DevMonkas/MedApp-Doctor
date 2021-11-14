@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, Button, StyleSheet, FlatList} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {COLORS, SIZES} from '../../constants/theme';
 import {
   getAllConversations,
   startConsultation,
@@ -84,7 +85,7 @@ const MessagesScreen = ({navigation, route}: any) => {
       });
   }, []);
   return (
-    <Container>
+    <Container style={styles.container}>
       <FlatList
         data={conversations}
         keyExtractor={item => item._id!}
@@ -100,7 +101,16 @@ const MessagesScreen = ({navigation, route}: any) => {
             }}>
             <UserInfo>
               <UserImgWrapper>
-                <UserImg source={{uri: item.image}} />
+                <UserImg
+                  source={{
+                    uri: `https://ui-avatars.com/api/?name=${
+                      item.name
+                    }&background=${COLORS.primary[100].replace(
+                      '#',
+                      '',
+                    )}&color=${COLORS.primary[500].replace('#', '')}&bold=true`,
+                  }}
+                />
               </UserImgWrapper>
               <TextSection>
                 <UserInfoText>
@@ -122,8 +132,7 @@ export default MessagesScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 200,
-    backgroundColor: 'green',
+    paddingTop: 0.13 * SIZES.height,
     alignItems: 'center',
     justifyContent: 'center',
   },

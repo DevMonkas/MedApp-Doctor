@@ -9,7 +9,7 @@ import {Environment} from '../utils/Environment';
 
 export const getAllConversations = () => {
   return axios.get<Conversations[]>(
-    Environment.BASE_URL + '/chat/getAllConsultations',
+    Environment.BASE_URL + '/chat/getAllConsultationsForDoctor',
   );
 };
 export const startConsultation = async (
