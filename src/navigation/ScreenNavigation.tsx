@@ -26,17 +26,20 @@ import {SocketContext} from '../shared/SocketProvider';
 import {IMessage} from 'react-native-gifted-chat';
 import {getAllConversations, startConsultation} from '../services/Chat.service';
 import {MessageContext} from '../shared/MessageProvider';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
+import VideoCall from '../pages/VideoCall/VideoCall';
 import {AuthContext} from '../shared/AuthProvider';
+import {VideoCallContext} from '../shared/VideoCallProvider';
 import {getIdTokenRefreshed} from '../utils/Utility';
 import {checkAuth} from '../services/User.service';
-import {LoadingDialog} from '../components/Molecules/LoadingDialog/LoadingDialog';
 const Stack = createStackNavigator();
 
 export default function ScreenNavigation({viewedOnboarding, navigation}: any) {
   const soc = useContext(SocketContext);
-  const [messageObj, setMessageObj] = useContext(MessageContext);
   const [user, setUser] = useContext(AuthContext);
-
+  const [messageObj, setMessageObj] = useContext(MessageContext);
+  const {initialize} = useContext(VideoCallContext);
   useEffect(() => {
     getIdTokenRefreshed().then(token => {
       checkAuth(token!).then(res => {
@@ -51,6 +54,8 @@ export default function ScreenNavigation({viewedOnboarding, navigation}: any) {
         }
       });
     });
+
+    initialize();
     getAllConversations()
       .then(data => {
         const myData = data.data;
@@ -60,8 +65,9 @@ export default function ScreenNavigation({viewedOnboarding, navigation}: any) {
           console.log('YOYOYOYO', element.userPhone!, element.doctorPhone);
           startConsultation(
             soc,
-            element.userPhone!,
             element.doctorPhone!,
+            element.userPhone!,
+
             true,
           );
         });
@@ -71,6 +77,7 @@ export default function ScreenNavigation({viewedOnboarding, navigation}: any) {
       });
 
     soc.on('message', (data: any) => {
+      console.log('MESSAGE RECEIVED');
       let message: IMessage = {
         _id: data.from + '_' + Math.round(Math.random() * 1000000),
         createdAt: data.created_at,
@@ -113,24 +120,43 @@ export default function ScreenNavigation({viewedOnboarding, navigation}: any) {
       color={COLORS.primary[500]}
     />
   );
+
+  const callingButtons = (navigation: any, color: string) => (
+    <View style={{paddingRight: '15%', flexDirection: 'row'}}>
+      <Feather
+        name="phone-call"
+        style={{marginRight: '20%'}}
+        size={26}
+        onPress={() => navigate(navigation, 'CallingScreen')}
+        color={COLORS.primary[500]}
+      />
+
+      <AntDesign
+        name="videocamera"
+        size={26}
+        onPress={() => navigate(navigation, 'VideoCallingScreen')}
+        color={COLORS.primary[500]}
+      />
+    </View>
+  );
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="DrawerScreen"
-        component={DrawerNavigation}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{headerShown: false}}
-      />
       <Stack.Screen
         name="Onboarding"
         component={Onboarding}
         options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="DrawerScreen"
+        component={DrawerNavigation}
+        options={{headerShown: false}}
+      />
 
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="OTPScreen"
         component={OTPScreen}
@@ -161,6 +187,14 @@ export default function ScreenNavigation({viewedOnboarding, navigation}: any) {
           title: '',
         }}
         component={CallingScreen}
+      />
+      <Stack.Screen
+        name="VideoCallingScreen"
+        options={{
+          headerShown: false,
+          title: '',
+        }}
+        component={VideoCall}
       />
       <Stack.Screen
         name="Wallet"
@@ -195,6 +229,8 @@ export default function ScreenNavigation({viewedOnboarding, navigation}: any) {
           headerTitleStyle: styles.secondaryHeaderTitle,
           headerBackgroundContainerStyle: {backgroundColor: 'white'},
           headerLeft: () => backButton(navigation, 'white'),
+          headerRight: () => callingButtons(navigation, 'white'),
+          headerTitle: '' + user.selectedPhone,
           title: 'Chat',
         })}
         component={Chat}

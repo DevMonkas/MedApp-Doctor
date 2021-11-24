@@ -30,7 +30,7 @@ const Chat = ({navigation, route}: any) => {
     console.log('HONEY SINGAAAAA', messageObj);
     if (
       messageObj[0] &&
-      messageObj[0]._id.split('_')[0] === route?.params.doctorPhone
+      messageObj[0]._id.split('_')[0] === route?.params.userPhone
     ) {
       setMessages((previousMessages: any) =>
         GiftedChat.append(previousMessages, messageObj),
@@ -39,7 +39,7 @@ const Chat = ({navigation, route}: any) => {
   }, [messageObj]);
 
   const onSend = useCallback((message = []) => {
-    console.log('chal ja bhai');
+    console.log('chal ja bhai', message);
     setMessages((previousMessages: any) =>
       GiftedChat.append(previousMessages, message),
     );
@@ -72,8 +72,8 @@ const Chat = ({navigation, route}: any) => {
           if (text && onSend) {
             sendMessage(
               soc,
+              userContext.selectedPhone?.toString()!,
               userContext.phone!,
-              route?.params.doctorPhone,
               text,
             );
             onSend(
