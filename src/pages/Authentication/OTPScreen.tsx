@@ -35,12 +35,19 @@ export default function OTPScreen({navigation, route}: any) {
   const verifyOTP = async () => {
     setLoading(true);
     try {
+      console.log('IN TRY BLOCK');
+      // console.log('VID', route.params?.verificationId);
       const confirmation: FirebaseAuthTypes.ConfirmationResult =
         route.params?.verificationId;
+
       const credential = await confirmation.confirm(otp);
+
       let token = await credential?.user.getIdToken();
+
       // console.log(token);
       const res = await checkAuth(token!);
+
+      console.log('RESponse', res);
       // const res = {
       //   data: {
       //     userExists: true,
@@ -63,6 +70,7 @@ export default function OTPScreen({navigation, route}: any) {
         navigation.navigate('DrawerScreen');
       }
     } catch (err: any) {
+      console.log('IN CATCH BLOCK');
       console.error(err);
       setLoading(false);
       setError(err?.message);
@@ -118,6 +126,7 @@ export default function OTPScreen({navigation, route}: any) {
             onPress={async () => {
               verifyOTP()
                 .then(data => {
+                  console.log('VERIFICATION');
                   console.log(data);
                 })
                 .catch(err => {

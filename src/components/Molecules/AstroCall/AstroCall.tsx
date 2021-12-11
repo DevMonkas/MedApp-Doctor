@@ -23,7 +23,7 @@ import {startConsultation} from '../../../services/Chat.service';
 import {getAllDoctors} from '../../../services/Doctor.service';
 import {AuthContext} from '../../../shared/AuthProvider';
 import {SocketContext} from '../../../shared/SocketProvider';
-import {Doctor} from '../../../types/ExternalModel.model';
+import {Doctor} from '../../../types/ExternalModel.model;
 
 import SecondaryButton from '../../atoms/SecondaryButton/SecondaryButton';
 import Footer from '../Footer/Footer';
@@ -239,7 +239,7 @@ export const AstroCall = ({navigation}: any) => {
                   <SecondaryButton
                     text="START CONSULTATION"
                     onPress={() => {
-                      startConsultation(soc, user.phone!, item.phone, true);
+                      startConsultation(soc,item.phone, user.phone!,  true);
                     }}
                   />
                   {/* </View> */}

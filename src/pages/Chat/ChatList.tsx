@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, Button, StyleSheet, FlatList} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {COLORS, SIZES} from '../../constants/theme';
 import {
   getAllConversations,
   startConsultation,
@@ -85,32 +84,24 @@ const MessagesScreen = ({navigation, route}: any) => {
       });
   }, []);
   return (
-    <Container style={styles.container}>
+    <Container>
       <FlatList
         data={conversations}
         keyExtractor={item => item._id!}
         renderItem={({item}) => (
           <Card
             onPress={() => {
-              startConsultation(soc, user.phone!, item.doctorPhone!);
+              setUser({...user, selectedPhone: item.userPhone});
+              startConsultation(soc, item.userPhone!, user.phone!);
               navigation.navigate('Chat', {
                 userName: item.name,
                 img: item.image,
-                doctorPhone: item.doctorPhone,
+                userPhone: item.userPhone,
               });
             }}>
             <UserInfo>
               <UserImgWrapper>
-                <UserImg
-                  source={{
-                    uri: `https://ui-avatars.com/api/?name=${
-                      item.name
-                    }&background=${COLORS.primary[100].replace(
-                      '#',
-                      '',
-                    )}&color=${COLORS.primary[500].replace('#', '')}&bold=true`,
-                  }}
-                />
+                <UserImg source={{uri: item.image}} />
               </UserImgWrapper>
               <TextSection>
                 <UserInfoText>
@@ -132,7 +123,8 @@ export default MessagesScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 0.13 * SIZES.height,
+    marginTop: 200,
+    backgroundColor: 'green',
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -20,7 +20,7 @@ export const startConsultation = async (
 ) => {
   soc.emit('joinServer', {
     roomId: `${userPhone}_${doctorPhone}`,
-    phone: userPhone,
+    phone: doctorPhone,
   });
   if (newConsulation) {
     sendMessage(
