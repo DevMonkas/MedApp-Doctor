@@ -65,9 +65,9 @@ export default function ScreenNavigation({viewedOnboarding, navigation}: any) {
           console.log('YOYOYOYO', element.userPhone!, element.doctorPhone);
           startConsultation(
             soc,
-            element.doctorPhone!,
-            element.userPhone!,
 
+            element.userPhone!,
+            element.doctorPhone!,
             true,
           );
         });
