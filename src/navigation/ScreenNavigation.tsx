@@ -41,6 +41,7 @@ export default function ScreenNavigation({viewedOnboarding, navigation}: any) {
   const [messageObj, setMessageObj] = useContext(MessageContext);
   const {initialize} = useContext(VideoCallContext);
   useEffect(() => {
+    initialize();
     getIdTokenRefreshed().then(token => {
       checkAuth(token!).then(res => {
         console.log('Details', res.data);
@@ -55,7 +56,6 @@ export default function ScreenNavigation({viewedOnboarding, navigation}: any) {
       });
     });
 
-    initialize();
     getAllConversations()
       .then(data => {
         const myData = data.data;
