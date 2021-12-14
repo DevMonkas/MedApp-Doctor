@@ -5,7 +5,13 @@ import React, {
   useContext,
   useRef,
 } from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Bubble, GiftedChat, IMessage, Send} from 'react-native-gifted-chat';
 import ChatHead from './ChatHead';
 import PrimaryButton from '../../components/atoms/PrimaryButton/PrimaryButton';
@@ -95,20 +101,35 @@ const Chat = ({navigation, route}: any) => {
   return (
     <>
       {/* <ChatHead userName={route.params?.userName} img={route.params?.img} /> */}
-      <GiftedChat
-        messages={messages}
-        onSend={messages => onSend(messages)}
-        user={{
-          _id: 1,
-        }}
-        renderBubble={renderBubble}
-        alwaysShowSend
-        scrollToBottom
-        messagesContainerStyle={{backgroundColor: 'white'}}
-        renderSend={renderSend}
-      />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container} //this value is depends upon your view/component height
+      >
+        <GiftedChat
+          messages={messages}
+          onSend={messages => onSend(messages)}
+          user={{
+            _id: 1,
+          }}
+          renderBubble={renderBubble}
+          alwaysShowSend
+          scrollToBottom
+          messagesContainerStyle={{backgroundColor: 'white'}}
+          renderSend={renderSend}
+        />
+      </KeyboardAvoidingView>
     </>
   );
 };
 
 export default Chat;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 2,
+    width: '100%',
+    backgroundColor: 'white',
+    marginHorizontal: 'auto',
+  },
+});
