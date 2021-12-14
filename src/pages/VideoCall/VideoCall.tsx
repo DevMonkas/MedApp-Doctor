@@ -26,48 +26,8 @@ import {
 import {COLORS, SIZES} from '../../constants/theme';
 import {VideoCallContext} from '../../shared/VideoCallProvider';
 import {AuthContext} from '../../shared/AuthProvider';
+import {startConsultation} from '../../services/Chat.service';
 
-const pc_config = {
-  iceServers: [
-    {
-      urls: [
-        'turn:13.250.13.83:3478?transport=udp',
-        'stun:stun1.l.google.com:19302',
-        'stun:stun2.l.google.com:19302',
-      ],
-      username: 'YzYNCouZM1mhqhmseWk6',
-      credential: 'YzYNCouZM1mhqhmseWk6',
-    },
-    {
-      url: 'turn:numb.viagenie.ca',
-      credential: 'muazkh',
-      username: 'webrtc@live.com',
-    },
-    {
-      url: 'turn:192.158.29.39:3478?transport=udp',
-      credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-      username: '28224511:1379330808',
-    },
-    {
-      url: 'turn:192.158.29.39:3478?transport=tcp',
-      credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-      username: '28224511:1379330808',
-    },
-    {
-      url: 'turn:turn.bistri.com:80',
-      credential: 'homeo',
-      username: 'homeo',
-    },
-    {
-      url: 'turn:turn.anyfirewall.com:443?transport=tcp',
-      credential: 'webrtc',
-      username: 'webrtc',
-    },
-    // {
-    //   urls : 'stun:stun.l.google.com:19302'
-    // }
-  ],
-};
 export default function VideoCall(props: any) {
   // const [localStream, setLocalStream] = React.useState<MediaStream | null>(
   //   null,
@@ -82,30 +42,25 @@ export default function VideoCall(props: any) {
     setOnCall,
     setCallEnded,
   } = useContext(VideoCallContext);
-
+  const [user, setUser] = useContext(AuthContext);
   // const peerConnection = new RTCPeerConnection(pc_config);
   const [mic, setMic] = React.useState(true);
   const [video, setVideo] = React.useState(true);
   const soc = React.useContext(SocketContext);
-  const [user, setUser] = useContext(AuthContext);
+
   React.useEffect(() => {
     setOnCall(true);
     setCallEnded(false);
+    call();
   }, []);
   React.useEffect(() => {
     // initilizePeerConnection();
-    console.log('active chat=>', user.selectedPhone + ' ' + user.phone);
+
     if (!onCall) {
       props.navigation.goBack();
     }
   }, [onCall]);
 
-  const sendToPeer = (messageType: string, payload: any) => {
-    soc.emit(messageType, {
-      roomId: '8428370008_8428370008',
-      payload,
-    });
-  };
   const toggleMic = () => {
     if (localStream)
       // @ts-ignore
@@ -132,15 +87,6 @@ export default function VideoCall(props: any) {
 
   const call = () => {
     createOffer(user.selectedPhone + '_' + user.phone);
-  };
-
-  const createAnswer = () => {
-    console.log('Answer');
-    peerConnection.createAnswer().then((sdp: any) => {
-      peerConnection.setLocalDescription(sdp);
-
-      sendToPeer('answered', sdp);
-    });
   };
 
   const remoteVideo = true ? (
@@ -177,7 +123,7 @@ export default function VideoCall(props: any) {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.primary[100]}}>
       <StatusBar backgroundColor="green" barStyle={'dark-content'} />
-      <View style={{...styles.buttonsContainer}}>
+      {/* <View style={{...styles.buttonsContainer}}>
         <View style={{flex: 1}}>
           <TouchableOpacity onPress={call}>
             <View style={styles.button}>
@@ -192,7 +138,7 @@ export default function VideoCall(props: any) {
             </View>
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
       <View style={{...styles.videosContainer}}>
         <View
           style={{
@@ -311,7 +257,7 @@ const styles = StyleSheet.create({
   rtcView: {
     width: 120, //dimensions.width,
     height: 180, //dimensions.height / 2,
-    backgroundColor: 'purple',
+    backgroundColor: 'gray',
     zIndex: 100,
     position: 'absolute',
     right: 5,

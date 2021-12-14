@@ -72,6 +72,7 @@ export const VideoCallContext = createContext<any>({
   setOnCall: () => {},
   setCallEnded: () => {},
   roomId: '',
+  callStatus: '',
 });
 
 export const VideoCallProvider = (props: any) => {
@@ -86,6 +87,7 @@ export const VideoCallProvider = (props: any) => {
     //@ts-ignore
     new RTCPeerConnection(pc_config),
   );
+  const [callStatus, setCallStatus] = useState<string>('');
   const [mic, setMic] = useState(true);
   const [video, setVideo] = useState(true);
   const sendToPeer = (messageType: string, payload: any) => {
@@ -185,7 +187,7 @@ export const VideoCallProvider = (props: any) => {
       try {
         peerConnection.setRemoteDescription(new RTCSessionDescription(sdp));
       } catch (err) {
-        console.error(err);
+        console.log(err);
       }
     });
     soc.on('videoToggle', (data: any) => {
@@ -196,6 +198,8 @@ export const VideoCallProvider = (props: any) => {
     });
     soc.on('callEnded', (data: any) => {
       setCallEnded(true);
+      setOnCall(false);
+      endCall();
     });
     soc.on('candidate', (candidate: RTCIceCandidateType) => {
       peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
@@ -243,8 +247,13 @@ export const VideoCallProvider = (props: any) => {
           track.stop();
         });
       });
+      peerConnection.getRemoteStreams().forEach((stream: any) => {
+        stream.getTracks().forEach((track: any) => {
+          track.stop();
+        });
+      });
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
     sendToPeer('callEnded', 'End');
     // peerConnection.close();
@@ -256,6 +265,7 @@ export const VideoCallProvider = (props: any) => {
   };
   const createOffer = (room: string) => {
     // startLocalStream();
+    setCallStatus('Calling');
     roomId = room;
     console.log(roomId);
     startMedia()
@@ -273,7 +283,7 @@ export const VideoCallProvider = (props: any) => {
             sendToPeer('offerOrAnswer', sdp);
           })
           .catch((err: any) => {
-            console.error(err);
+            console.log(err);
           });
       })
       .catch(err => {});
@@ -282,6 +292,7 @@ export const VideoCallProvider = (props: any) => {
     // startLocalStream();
     console.log('Answer');
     console.log('roomId', roomId);
+    setCallStatus('Answered');
     startMedia()
       .then(stream => {
         setLocalStream(stream);
@@ -297,7 +308,7 @@ export const VideoCallProvider = (props: any) => {
             sendToPeer('offerOrAnswer', sdp);
           })
           .catch((err: any) => {
-            console.error(err);
+            console.log(err);
           });
       })
       .catch(err => {});
@@ -321,6 +332,7 @@ export const VideoCallProvider = (props: any) => {
         callEnded,
         setCallEnded,
         roomId,
+        callStatus,
       }}>
       {props.children}
     </VideoCallContext.Provider>
