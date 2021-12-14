@@ -8,6 +8,7 @@ import React, {
 import {
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -22,12 +23,60 @@ import {SocketContext} from '../../shared/SocketProvider';
 import {Doctor, Message} from '../../types/ExternalModel.model';
 import {AuthContext} from '../../shared/AuthProvider';
 import {MessageContext} from '../../shared/MessageProvider';
+import {fetchAllMessages} from '../../services/Chat.service';
 const Chat = ({navigation, route}: any) => {
   const [messages, setMessages] = useState<any>([]);
   const [userContext, setUser] = useContext(AuthContext);
   const [messageObj, setMessageObj] = useContext(MessageContext);
   const initialRender = useRef(true);
   const soc = useContext(SocketContext);
+  useEffect(() => {
+    fetchAllMessages({
+      userPhone: userContext.selectedPhone,
+      doctorPhone: userContext.phone,
+    })
+      .then((data: any) => {
+        //process data
+        let user1Obj = {
+          _id: 1,
+          name: 'RANDOM',
+          avatar: 'https://placeimg.com/140/140/any',
+        };
+
+        let user2Obj = {
+          _id: 2,
+          name: 'RANDOM_USER',
+          avatar: 'https://placeimg.com/140/140/any',
+        };
+
+        let dataObjArr = data.data;
+        let dataObjNew: any = [];
+        dataObjArr.reverse();
+        console.log(dataObjArr[0]);
+        for (let i = 0; i < dataObjArr.length; i++) {
+          let current = dataObjArr[i];
+          current._id = Math.random() * 100000000000;
+          if (current.message.split(' ')[0] === 'Consulatation') continue;
+          current.text = current.message;
+          current.createdAt = new Date(current.created_at);
+
+          if (current.from == userContext.phone) {
+            current.user = user1Obj;
+          } else {
+            current.user = user2Obj;
+          }
+          dataObjNew.push(current);
+        }
+
+        setMessages((previousMessages: any) =>
+          GiftedChat.append(previousMessages, dataObjNew),
+        );
+      })
+      .catch(err => {
+        console.log('ERRORRR  ');
+        console.log(err);
+      });
+  }, []);
   useEffect(() => {
     if (initialRender.current) {
       initialRender.current = false;

@@ -12,6 +12,11 @@ export const getAllConversations = () => {
     Environment.BASE_URL + '/chat/getAllConsultationsForDoctor',
   );
 };
+export const fetchAllMessages = (data: any) => {
+  return axios.get<any[]>(Environment.BASE_URL + '/chat/getChatsWithDoctor', {
+    params: data,
+  });
+};
 export const startConsultation = async (
   soc: Socket,
   userPhone: string,
@@ -46,8 +51,8 @@ export const sendMessage = async (
     payload: {
       userPhone: userPhone,
       doctorPhone: doctorPhone,
-      to: doctorPhone,
-      from: userPhone,
+      to: userPhone,
+      from: doctorPhone,
       message: message,
       system: system,
     },
